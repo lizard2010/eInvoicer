@@ -2,7 +2,7 @@
 
 <h1>Listing Facts</h1>
 
-<table>
+<table class="table table-responsive">
   <thead>
     <tr>
       <th>Activity</th>
@@ -19,7 +19,7 @@
         <td><%= fact.activity.name %><br><%= fact.description %></td>
         <td><%= fact.start_time %><br><%= fact.end_time %></td>
         <td><%= ((fact.end_time - fact.start_time)/60).to_i %></td>
-        <td><%= fact.tags.each {|n| n.name} %></td>
+        <td><%= fact.tags.map{|n| n.name}.join(",") %></td>
         <td><%= link_to 'Show', fact %></td>
         <td><%= link_to 'Edit', edit_fact_path(fact) %></td>
         <td><%= link_to 'Destroy', fact, method: :delete, data: { confirm: 'Are you sure?' } %></td>
