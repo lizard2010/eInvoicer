@@ -1,6 +1,21 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Listing Facts</h1>
+    <div ng-controller="TableController">
+        <p><strong>Page:</strong> {{tableParams.page()}}</p>
+        <p><strong>Count per page:</strong> {{tableParams.count()}}</p>
+
+        <table ng-table="tableParams" class="table">
+        <tr ng-repeat="task in tasks">
+            <td data-title="'Activity'">{{ task.activity.name }}<br> {{task.description}}</td>
+            <td data-title="'Period'">{{ task.start_time }}<br> {{ task.end_time }}</td>
+          <!--            <td data-title="'Name'">{{user.name}}</td>
+                      <td data-title="'Age'">{{user.age}}</td> -->
+        </tr>
+        </table>
+    </div>
+
+
 
 <table class="table table-responsive">
   <thead>

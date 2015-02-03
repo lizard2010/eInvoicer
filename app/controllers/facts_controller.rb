@@ -4,7 +4,7 @@ class FactsController < ApplicationController
   # GET /facts
   # GET /facts.json
   def index
-    @facts = Fact.all
+    @facts = Fact.includes(:activity).all
   end
 
   # GET /facts/1

@@ -13,5 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require bootstrap-sprockets
+//  ###  req uire bootstrap-sprockets
+//= require angular/angular
+//= require ng-table/dist/ng-table
 //= require_tree .
+
