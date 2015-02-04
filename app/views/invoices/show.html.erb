@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Client:</strong>
+  <%= @invoice.client %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @invoice.status %>
+</p>
+
+<p>
+  <strong>Sent time:</strong>
+  <%= @invoice.sent_time %>
+</p>
+
+<p>
+  <strong>Payed time:</strong>
+  <%= @invoice.payed_time %>
+</p>
+
+<%= link_to 'Edit', edit_invoice_path(@invoice) %> |
+<%= link_to 'Back', invoices_path %>
