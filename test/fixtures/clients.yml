@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyText
+  addr: MyText
+  rate: 9.99
+  currency: MyText
+
+two:
+  name: MyText
+  addr: MyText
+  rate: 9.99
+  currency: MyText
