@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150204135501) do
+ActiveRecord::Schema.define(version: 20150204155622) do
 
   create_table "activities", force: :cascade do |t|
     t.string  "name",           limit: 500
@@ -27,6 +27,15 @@ ActiveRecord::Schema.define(version: 20150204135501) do
     t.string  "color_code",     limit: 50
     t.integer "category_order"
     t.string  "search_name"
+  end
+
+  create_table "ei_clients", force: :cascade do |t|
+    t.text     "name"
+    t.text     "addr"
+    t.decimal  "rate"
+    t.text     "currency"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "ei_fact_invoices", force: :cascade do |t|

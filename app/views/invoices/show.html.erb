@@ -10,65 +10,81 @@
 <div id="wrapper">
   <p style="text-align:center; font-weight:bold; padding-top:15mm; font-size: 10mm;">INVOICE</p>
   <table style="border-style: none; padding-left: 4mm;">
-    <tr><td style="width: 85mm; text-align: left; padding-left: 4mm; border-style: none;">
-      <%= @invoice.client.addr %>
-    </td><td colspan=3 style="border-style: none; text-align: right;">
-      <img src="/img/lizard_2.png" style="opacity: 0.2;">
-    </td></tr>
-    <tr><td style="text-align: left; padding-left: 4mm;border-style: none;">
-      <b>Sergii Serogin</b>, independent freelancer<br>
-      skype: lizard_komodo<br>
-      email: lizard.komodo@gmail.com<br>
-      phone: +38 094 951 0667
-    </td><td style="border-style: none;">&nbsp;</td><td  style="width: 25mm; text-align: right; vertical-align: top;border-style: none;">
-      <b>Date:<br>
-        InvoiceID:</b>
-    </td><td style="width: 30mm; text-align: left; vertical-align: top;border-style: none;">
-      <b><%= Date.today %><br>
-        <%= @invoice.id %></b>
-    </td></tr>
-    <tr><td colspan=4 style="border-style: none;">&nbsp;</td></tr>
+    <tr>
+      <td style="width: 85mm; text-align: left; padding-left: 4mm; border-style: none;">
+        <%= @invoice.client.name %> <br>
+        <%= @invoice.client.addr %>
+      </td>
+      <td colspan=3 style="border-style: none; text-align: right;">
+        <img src="/img/lizard_2.png" style="opacity: 0.2;">
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: left; padding-left: 4mm;border-style: none;">
+        <b>Sergii Serogin</b>, independent freelancer<br>
+        skype: lizard_komodo<br>
+        email: lizard.komodo@gmail.com<br>
+        phone: +38 094 951 0667
+      </td>
+      <td style="border-style: none;">&nbsp;</td>
+      <td style="width: 25mm; text-align: right; vertical-align: top;border-style: none;">
+        <b>Date:<br>
+          InvoiceID:</b>
+      </td>
+      <td style="width: 30mm; text-align: left; vertical-align: top;border-style: none;">
+        <b><%= Date.today %><br>
+          <%= @invoice.id %></b>
+      </td>
+    </tr>
+    <tr>
+      <td colspan=4 style="border-style: none;">&nbsp;</td>
+    </tr>
   </table>
   <div style="clear: both;"></div>
 </div>
 <table style="margin-left: 4mm;border-style: none;">
- <tr style="background:#eee;">
-  <th>Activity</th>
-  <th style="width:22%;">Category</th>
-  <th style="width:24%;">start<br>stop</th>
-  <th style="width:12%;">Duration<br>min</th>
- </tr>
-
+  <tr style="background:#eee;">
+    <th>Activity</th>
+    <th style="width:22%;">Category</th>
+    <th style="width:24%;">start<br>stop</th>
+    <th style="width:12%;">Duration<br>min</th>
+  </tr>
+  <% @total=0 %>
+  <% @invoice.facts.each do |t| %>
+  <%
+     @start_time = t.start_time.to_time
+     @end_time   = t.end_time.to_time
+     @dur = (@end_time-@start_time).to_i
+     @total += @dur
+  %>
   <tr>
-    <td colspan=2 style=\"border-style: none;\"></td>
-    <td style=\"border-style: none;\"><b>Total time:</b></td>
-    <td style=\"border-style: none;\">$total<br>".
-   </tr>
-  foreach ($result as $m) {
-        $total += $m['dur'];
-        echo "<tr><td  style=\"border-left-style: solid;border-left-width: 1px;border-left-color: #CCC;\">$m[activities]".
-  ($m['description'] ? "<br><span>$m[description]</span>":"" )
-  ."</td><td>$m[category]</td><td>$m[start_time]<br>$m[end_time]</td><td class=\"dur\" data-id=\"$m[id]\">$m[dur]".
-  (  $m['dur'] > 60 ? sprintf("<br><span style>%02dh %02dmin</span>", gmdate("H", $m['dur']*60), gmdate("i", $m['dur']*60)) : '' ).
-  "</td></tr>\n";
-    }
+    <td style="border-left-style: solid;border-left-width: 1px;border-left-color: #CCC;">
+       <%= t.activity.name %>
+       <%= '<br>'.html_safe + t.description if t.description %>
+    </td>
+    <td><%= t.activity.category.name if t.activity.category %></td>
+    <td><%= @start_time.strftime '%F %T' %><br><%= @end_time.strftime '%F %T' %></td>
+    <td class="dur"><%= (@dur/60).to_i %>
+      <%= Time.at(@dur).utc.strftime('<br><span>%Hh %Mmin</span>').html_safe if @dur>60 %>
+    </td>
+  </tr>
+  <% end %>
+  <tr>
+    <td colspan=2 style="border-style: none;"></td>
+    <td style="border-style: none;"><b>Total time:</b></td>
+    <td style="border-style: none;"><%= (@total/60).to_i %><br>
+        <%= sprintf('<br><span>%02d h %02d min</span', (@total/3600).to_i, ((@total/60)%60)).html_safe %></td>
+  </tr>
+  <tr>
+    <td colspan=2 style="border-style: none;"></td>
+    <td style="border-style: none;">Hour rate:<br><span>(<%= @invoice.client.currency %>/hour)</span></td>
+    <td style="border-style: none;"><%= @invoice.client.rate %></td></tr>
+  <tr>
+    <td colspan=2 style="border-style: none;"></td>
+    <td style="border-style: none;"><b>Total amount:</b></td>
+    <td style="border-style: none;">sprintf("%.2F %s", round($total*$hRate/60,2), $hCurr)."</td>
+  </tr>
+</table>
 
-    echo "
-  sprintf("<span style>%02d h %02d min</span>", floor($total/60), gmdate("i", $total*60)).
-  "</td></tr>";
-    echo "<tr><td colspan=2 style=\"border-style: none;\"></td>
-  <td style=\"border-style: none;\">Hour rate:<br><span>($hCurr/hour)</span></td><td style=\"border-style: none;\">". sprintf("%.2F", $hRate). "</td></tr>";
-    echo "<tr><td colspan=2 style=\"border-style: none;\"></td>
-  <td style=\"border-style: none;\"><b>Total amount:</b></td><td style=\"border-style: none;\">".sprintf("%.2F %s", round($total*$hRate/60,2), $hCurr)."</td></tr>";
-    echo "</table>\n";
-
-       $file_db = null;
-  }catch(PDOException $e) {
-     // Print PDOException message
-     echo $e->getMessage();
-     echo 'Error';
-  }
-
-  ?>
 </body>
 </html>
