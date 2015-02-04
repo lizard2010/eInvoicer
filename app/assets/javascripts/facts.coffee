@@ -32,6 +32,8 @@ eInvoicer.controller 'TableController', ['$scope',  '$http', 'ngTableParams', ($
       $scope.selectedTasks.push(idSelectedRow);
       this.color = 'selected'
 
+  $scope.createInvoice = () ->
+      window.location = './invoices/new?id=' + $scope.selectedTasks if $scope.selectedTasks.length
 ]
 
 

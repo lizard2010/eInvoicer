@@ -17,17 +17,17 @@
   </div>
   <div class="field">
     <%= f.label :status %><br>
-    <%= f.number_field :status %>
+    <%= f.select :status, Invoice::STATUSES.collect { |x| [x, Invoice::STATUSES.index(x) + 1] }, {:prompt=>true} %>
   </div>
-  <div class="field">
-    <%= f.label :sent_time %><br>
-    <%= f.datetime_select :sent_time %>
-  </div>
-  <div class="field">
-    <%= f.label :payed_time %><br>
-    <%= f.datetime_select :payed_time %>
-  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>
+
+  <% if @fact_ids                           %>
+    <%  @fact_ids.split(',').each do |fact| %>
+        <%= f.hidden_field :fact_ids, :multiple => true, :value => fact %>
+    <% end %>
+  <% end %>
+
 <% end %>

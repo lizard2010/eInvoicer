@@ -5,7 +5,7 @@
         <p class="inline"><strong>Page:</strong> {{tableParams.page()}} &nbsp;
            <strong>Count per page:</strong> {{tableParams.count()}}</p>
       <div class="inline pull-right">
-        <button type="button" class="btn btn-primary">Make invoice</button>
+        <button ng-click="createInvoice()" type="button" class="btn btn-primary">Create invoice</button>
       </div>
 
         <table ng-table="tableParams"  template-pagination="custom/pager" class="table table-responsive">

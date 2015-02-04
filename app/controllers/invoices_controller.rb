@@ -10,11 +10,13 @@ class InvoicesController < ApplicationController
   # GET /invoices/1
   # GET /invoices/1.json
   def show
+    render :layout => false
   end
 
   # GET /invoices/new
   def new
     @invoice = Invoice.new
+    @fact_ids = params[:id]
   end
 
   # GET /invoices/1/edit
@@ -24,6 +26,7 @@ class InvoicesController < ApplicationController
   # POST /invoices
   # POST /invoices.json
   def create
+
     @invoice = Invoice.new(invoice_params)
 
     respond_to do |format|
@@ -69,6 +72,6 @@ class InvoicesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def invoice_params
-      params.require(:invoice).permit(:client_id, :status, :sent_time, :payed_time)
+      params.require(:invoice).permit(:client_id, :status, :sent_time, :payed_time, {:fact_ids => []})
     end
 end

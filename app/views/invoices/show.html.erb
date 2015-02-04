@@ -1,24 +1,74 @@
-<p id="notice"><%= notice %></p>
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Invoice</title>
+  <style type="text/css" title="currentStyle">
+      @import "/css/pdf/main.css";
+  </style>
+</head>
+<body>
+<div id="wrapper">
+  <p style="text-align:center; font-weight:bold; padding-top:15mm; font-size: 10mm;">INVOICE</p>
+  <table style="border-style: none; padding-left: 4mm;">
+    <tr><td style="width: 85mm; text-align: left; padding-left: 4mm; border-style: none;">
+      <%= @invoice.client.addr %>
+    </td><td colspan=3 style="border-style: none; text-align: right;">
+      <img src="/img/lizard_2.png" style="opacity: 0.2;">
+    </td></tr>
+    <tr><td style="text-align: left; padding-left: 4mm;border-style: none;">
+      <b>Sergii Serogin</b>, independent freelancer<br>
+      skype: lizard_komodo<br>
+      email: lizard.komodo@gmail.com<br>
+      phone: +38 094 951 0667
+    </td><td style="border-style: none;">&nbsp;</td><td  style="width: 25mm; text-align: right; vertical-align: top;border-style: none;">
+      <b>Date:<br>
+        InvoiceID:</b>
+    </td><td style="width: 30mm; text-align: left; vertical-align: top;border-style: none;">
+      <b><%= Date.today %><br>
+        <%= @invoice.id %></b>
+    </td></tr>
+    <tr><td colspan=4 style="border-style: none;">&nbsp;</td></tr>
+  </table>
+  <div style="clear: both;"></div>
+</div>
+<table style="margin-left: 4mm;border-style: none;">
+ <tr style="background:#eee;">
+  <th>Activity</th>
+  <th style="width:22%;">Category</th>
+  <th style="width:24%;">start<br>stop</th>
+  <th style="width:12%;">Duration<br>min</th>
+ </tr>
 
-<p>
-  <strong>Client:</strong>
-  <%= @invoice.client %>
-</p>
+  <tr>
+    <td colspan=2 style=\"border-style: none;\"></td>
+    <td style=\"border-style: none;\"><b>Total time:</b></td>
+    <td style=\"border-style: none;\">$total<br>".
+   </tr>
+  foreach ($result as $m) {
+        $total += $m['dur'];
+        echo "<tr><td  style=\"border-left-style: solid;border-left-width: 1px;border-left-color: #CCC;\">$m[activities]".
+  ($m['description'] ? "<br><span>$m[description]</span>":"" )
+  ."</td><td>$m[category]</td><td>$m[start_time]<br>$m[end_time]</td><td class=\"dur\" data-id=\"$m[id]\">$m[dur]".
+  (  $m['dur'] > 60 ? sprintf("<br><span style>%02dh %02dmin</span>", gmdate("H", $m['dur']*60), gmdate("i", $m['dur']*60)) : '' ).
+  "</td></tr>\n";
+    }
 
-<p>
-  <strong>Status:</strong>
-  <%= @invoice.status %>
-</p>
+    echo "
+  sprintf("<span style>%02d h %02d min</span>", floor($total/60), gmdate("i", $total*60)).
+  "</td></tr>";
+    echo "<tr><td colspan=2 style=\"border-style: none;\"></td>
+  <td style=\"border-style: none;\">Hour rate:<br><span>($hCurr/hour)</span></td><td style=\"border-style: none;\">". sprintf("%.2F", $hRate). "</td></tr>";
+    echo "<tr><td colspan=2 style=\"border-style: none;\"></td>
+  <td style=\"border-style: none;\"><b>Total amount:</b></td><td style=\"border-style: none;\">".sprintf("%.2F %s", round($total*$hRate/60,2), $hCurr)."</td></tr>";
+    echo "</table>\n";
 
-<p>
-  <strong>Sent time:</strong>
-  <%= @invoice.sent_time %>
-</p>
+       $file_db = null;
+  }catch(PDOException $e) {
+     // Print PDOException message
+     echo $e->getMessage();
+     echo 'Error';
+  }
 
-<p>
-  <strong>Payed time:</strong>
-  <%= @invoice.payed_time %>
-</p>
-
-<%= link_to 'Edit', edit_invoice_path(@invoice) %> |
-<%= link_to 'Back', invoices_path %>
+  ?>
+</body>
+</html>

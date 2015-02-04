@@ -4,7 +4,7 @@ class FactsController < ApplicationController
   # GET /facts
   # GET /facts.json
   def index
-    @facts = Fact.includes(:activity).all
+    @facts = Fact.includes(:activity).limit(15)
   end
 
   # GET /facts/1

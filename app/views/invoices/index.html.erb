@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Client</th>
+      <th>Tasks</th>
       <th>Status</th>
       <th>Sent time</th>
       <th>Payed time</th>
@@ -16,8 +17,9 @@
   <tbody>
     <% @invoices.each do |invoice| %>
       <tr>
-        <td><%= invoice.client %></td>
-        <td><%= invoice.status %></td>
+        <td><%= invoice.client.name if invoice.client %></td>
+        <td><%= Invoice::STATUSES.index(invoice.status) %></td>
+        <td><%= invoice.facts.map {|x| x.id}.join(', ') %></td>
         <td><%= invoice.sent_time %></td>
         <td><%= invoice.payed_time %></td>
         <td><%= link_to 'Show', invoice %></td>
