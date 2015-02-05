@@ -30,7 +30,9 @@ gem 'autoprefixer-rails'
 #gem 'bower'
 gem 'bower-rails'
 # paginator
-gem 'will_paginate'
+#gem 'will_paginate'
+gem 'pdfkit'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
